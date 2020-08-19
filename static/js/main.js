@@ -4,65 +4,9 @@ $(document).ready(function () {
 });
 //carregar tela do bot
 function Inicializarbot(){
-    var display = document.getElementById("chat_box").style.display
-    if(display == "block"){
-        document.getElementById("chat_box").style.display = "none";
-    }else {
-        document.getElementById("chat_box").style.display = "block";
-        var input = document.getElementById("message");
-        input.addEventListener("keyup", function(event) {
-            if (event.keyCode === 13) {
-            event.preventDefault();
-            EnviarMensagem()
-            }
-        });
-    }
-
+    
 };
-
-function EnviarMensagem(){
-    var divOut = document.createElement('div');
-    var div = document.createElement('div');
-
-    divOut.appendChild(div)
-    div.innerHTML = document.getElementById('message').value;
-
-    divOut.style.width = "100%";
-    divOut.style.height = "42px";
-    
-    div.classList.add("fala_pessoa");
-
-    document.getElementById("conversation").appendChild(divOut);
-    document.getElementById("message").value = ""
-    console.log("Mensagem enviada!!")
-
-    var objScrDiv = document.getElementById("conversation");
-    objScrDiv.scrollTop = objScrDiv.scrollHeight;
-}
-
-function MenssagemBot(message) {
-    var divOut = document.createElement('div');
-    var div = document.createElement('div');
-
-    divOut.appendChild(div)
-    div.innerHTML = message
-
-    divOut.style.width = "100%";
-    divOut.style.height = "42px";
-    div.classList.add("fala_bot");
-
-    document.getElementById("conversation").appendChild(divOut);
-
-    
-    var objScrDiv = document.getElementById("conversation");
-    objScrDiv.scrollTop = objScrDiv.scrollHeight;
-  }
-
-function AbrirSNP(){
-    
-}
-
-
+//adicionar display: none para a bolinha after click
 //carga de senha errada
 function wrongpass(){
     swal.fire({

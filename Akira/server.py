@@ -1,9 +1,11 @@
-from flask import Flask, url_for, render_template, request
+from flask import Flask, url_for, render_template, request, jsonify
 from flask_ldap3_login import LDAP3LoginManager
 from flask_login import LoginManager, login_user, UserMixin, current_user, login_required, logout_user
 from flask import render_template_string, redirect
 from flask_ldap3_login.forms import LDAPLoginForm
-import requests
+from db import *
+import time
+
 
 app = Flask(__name__,template_folder='templates',static_url_path='/static')
 app.config['SECRET_KEY'] = 'JAMES TIBERIUS KIRK'
@@ -85,7 +87,7 @@ def home():
     if not current_user or current_user.is_anonymous:
         return redirect(url_for('login'))
     # User is logged in, so show them a page with their cn and dn.
-    return render_template('index.html')
+    return render_template('index.html', hardwareDict=createDictConteudoHardware())
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -104,6 +106,20 @@ def login():
     if request.method=="GET":
         return render_template('login.html',form=form, var=0)
 
+'''@app.route('/conteudo', methods=['GET','POST'])
+def conteudo():
+    start = time.time()
+    categoria = request.form.get("categoria")
+    # results = getConteudo(categoria)
+    results = getConteudo('Mouse')
+    conteudoDict = []
+    for result in results:
+        item = dict(titulo=result['titulo'], solucao=result['solucao'], categoria=result['categoria'])
+        conteudoDict.append(item)
+    end = time.time()
+    print('Time: ' + str(end - start))
+    return app.make_response(dict(conteudo=conteudoDict))
+'''
     
 @app.route('/logout')
 def logout():
@@ -149,15 +165,50 @@ def admin_del():
     else:
         return redirect(url_for('logout'))
 
-@app.route('/abrirSNP')
-def abrirSNP():
-    url =  "https://intranet.mpf.mp.br/snp/api/novo-pedido"
-    print("hello world")
-    # url = "https://google.com"
-    res = requests.get(url, verify=False)
+# @app.route('/test', methods=['GET', 'POST'])
+def createDictConteudoHardware():
+    
+    #db = connectBD()
+    #problem = getProblemsCollection(db)
+    hardwareDict = []
+    equipamento = []
+    titulos = ['Mouse', 'Teclado', 'Monitor', 'Disco rígido', 'Áudio', 'Gabinete','Webcam']
+    #query para preencher o dict de Hardware
+    for titulo in titulos:
+        results = problem.find({"categoria":titulo})
+        equipamento = []
+        #criando um dict de documentos
+        for result in results:
+            item = dict(titulo=result['titulo'], solucao=result['solucao'], categoria = result['categoria'])
+            equipamento.append(item)
+        
+        hardwareDict.append(equipamento)
 
-    print(res.status_code)
-    return render_template('index.html')
+    return hardwareDict
 
+def createDictConteudoWindows():
+    db = connectBD()
+    problem = getProblemsCollection(db)
+    tags = getTagsColletion(db)
+    windowsDict = []
+    results = tags.find({"tipo":'Windows'})
+    
+    equipamento = []
+    for result in results:
+        print(result['problemas'])
+        # item = dict(titulo=result['titulo'], solucao=result['solucao'], categoria = result['categoria'])
+        # equipamento.append(item)
+        
+    windowsDict.append(equipamento)
+    for itens in windowsDict:
+        print(itens)
+        
+    return windowsDict
+
+'''
+@app.route('/test', methods=['GET', 'POST'])
+def Test():
+    return app.make_response('Hello World')
+'''
 if __name__ == '__main__':
     app.run()

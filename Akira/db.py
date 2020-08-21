@@ -6,11 +6,14 @@ class DataBase:
     def __init__(self):
         self.db = ''
         self.client = ''
+        self.subCategoria = []
+        self.categoria = []
+        self.connectBD()
         
     def connectBD(self):
         try:
-            self.client = pymongo.MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false")
-            #self.client = pymongo.MongoClient("mongodb+srv://mongoread:mongoreadMPF@akiradb.ubcx3.gcp.mongodb.net/<dbname>?retryWrites=true&w=majority")
+            #self.client = pymongo.MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false")
+            self.client = pymongo.MongoClient("mongodb+srv://mongoread:mongoreadMPF@akiradb.ubcx3.gcp.mongodb.net/<dbname>?retryWrites=true&w=majority")
             self.db = self.client["dbAkira"]
             print('Conexão bem sucedida!')
             # return db
@@ -24,72 +27,72 @@ class DataBase:
         except:
             print("fechamento falhou")
         
-    def getTagsColletion(self):
-        return self.db["tagsCollection"]
-
-    def getProblemsCollection(self):
-        return self.db["problemCollection"]
-
+    
     def getConteudo(self):
         collection = self.getProblemsCollection()
-        subCategoria = []
-        setSubCategorias = set()
-        #Pesquisar de uma forma mais inteligente de realizar a query que traga apenas os elementos únicos de cada categoria. Ex (Hardware,Windows, Software,Impressora, etc)
-        query = collection.find({})
-    
-        setCategorias = self.getCategoria(collection)
 
+        # Criando um dicionário para as categorias
+        conteudoDict = dict()
+
+        #Buscado todas as categorias do banco
+        setCategorias = self.findCategoria(collection)
+
+        #Iterando nesse set para a criação de um dicinário de subcategorias
         for categoria in setCategorias:
-            # setCategoria = {'Hardware'}
-            # categoria = 'Hardware'
-            print(self.getSubCategoria(categoria,collection))
 
-        # # for item in query:
-        #     setCategorias.add(item['Categoria'])
-        # print(setCategorias)
-        
+            # Criando um dicionário de subcategorias
+            dictSubCategoria = dict()
 
-        # {"Hardware": {Teclado, Mouse, Disco rigido},
-        #   "windows": {usuario, login}
-        # }
+            # Buscando todas as subcategorias de uma categoria específica
+            setSubCategoria = self.findSubCategoria(categoria, collection)
 
-        # {
-        #   "teclado": {nao funciona},
-            #"Mouse": { nao funicona}
-        # }
+            # Iterando sobre em cada subcategoria 
+            for subCategoria in setSubCategoria:
+                
+                # Buscando cada problema de cada subcategoria
+                dictSubCategoria[subCategoria] = self.createListProblems(categoria, subCategoria, collection)
+            
+            # Inserindo o dicionário de problemas das subcategoria na categoias nas categorias
+            conteudoDict[categoria] = dictSubCategoria
 
-        
-    def getCategoria(self, collection):
-        setCategorias = set()
+        self.closeBD()
+        print(conteudoDict['Windows']['Mouse'])
+        return conteudoDict
+
+    def findCategoria(self, collection):
+ 
         query = collection.find({}).distinct('Categoria')
         for item in query:
-            setCategorias.add(item)
-
-        return setCategorias
+            self.categoria.append(item)
+        return self.categoria
     
-    def getSubCategoria(self, categoria,collection ):
-        setSubCategorias = set()
+    def findSubCategoria(self, categoria,collection ):
+        subCategoria = []
+        #recebendo o nome da categoria a ser realizada a query
         query = collection.find({"Categoria":categoria}).distinct('Subcategoria')
         for item in query:
-            print(item)
-               setSubCategorias.add(item)
+            subCategoria.append(item)
+        return subCategoria
+    
+    def createListProblems(self,categoria,subCategoria, collection):
+        listProblems = []
+        query = collection.find({"Categoria": categoria, "Subcategoria": subCategoria})
+        for item in query:
+            listProblems.append(item)
 
-        return setSubCategorias
+        # print(listProblems)
+        # print('\n')
+        return listProblems
 
-        
-        
-    def getProblemas(self,tags):
-        itens = []
-
-
-
-
-
-inicio = time.time()
-variavelTeste = DataBase()
-variavelTeste.connectBD()
-variavelTeste.getConteudo()
-fim = time.time()
-print(fim - inicio)
+    def getTagsColletion(self):
+        return self.db["tagsCollection"]
+    def getProblemsCollection(self):
+        return self.db["problemCollection"]
+    def getSubCategoria(self):
+        return self.subCategoria
+    def getCategoria(self):
+        return self.categoria
 
 
+teste = DataBase()
+conteudo = teste.getConteudo()

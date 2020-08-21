@@ -87,7 +87,14 @@ def home():
     if not current_user or current_user.is_anonymous:
         return redirect(url_for('login'))
     # User is logged in, so show them a page with their cn and dn.
-    return render_template('index.html', hardwareDict=createDictConteudoHardware())
+    db = DataBase()
+    conteudo = db.getConteudo()
+    print('Conteudo :' + str(conteudo) + '\n')
+    categoria = db.getCategoria()
+    # print('Categoria :' + str(categoria) + '\n')
+    subCategoria = db.getSubCategoria()
+    # print('Subcategoria :' + str(subCategoria) + '\n')
+    return render_template('index.html',conteudos = conteudo, categorias = categoria, subCategorias = subCategoria)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -105,21 +112,6 @@ def login():
             return render_template('login.html', form=form, var=1)
     if request.method=="GET":
         return render_template('login.html',form=form, var=0)
-
-'''@app.route('/conteudo', methods=['GET','POST'])
-def conteudo():
-    start = time.time()
-    categoria = request.form.get("categoria")
-    # results = getConteudo(categoria)
-    results = getConteudo('Mouse')
-    conteudoDict = []
-    for result in results:
-        item = dict(titulo=result['titulo'], solucao=result['solucao'], categoria=result['categoria'])
-        conteudoDict.append(item)
-    end = time.time()
-    print('Time: ' + str(end - start))
-    return app.make_response(dict(conteudo=conteudoDict))
-'''
     
 @app.route('/logout')
 def logout():
@@ -166,7 +158,8 @@ def admin_del():
         return redirect(url_for('logout'))
 
 # @app.route('/test', methods=['GET', 'POST'])
-def createDictConteudoHardware():
+
+'''def createDictConteudoHardware():
     
     #db = connectBD()
     #problem = getProblemsCollection(db)
@@ -185,30 +178,7 @@ def createDictConteudoHardware():
         hardwareDict.append(equipamento)
 
     return hardwareDict
-
-def createDictConteudoWindows():
-    db = connectBD()
-    problem = getProblemsCollection(db)
-    tags = getTagsColletion(db)
-    windowsDict = []
-    results = tags.find({"tipo":'Windows'})
-    
-    equipamento = []
-    for result in results:
-        print(result['problemas'])
-        # item = dict(titulo=result['titulo'], solucao=result['solucao'], categoria = result['categoria'])
-        # equipamento.append(item)
-        
-    windowsDict.append(equipamento)
-    for itens in windowsDict:
-        print(itens)
-        
-    return windowsDict
-
 '''
-@app.route('/test', methods=['GET', 'POST'])
-def Test():
-    return app.make_response('Hello World')
-'''
+
 if __name__ == '__main__':
     app.run()

@@ -70,9 +70,12 @@
             <h5>Para acesso rápido, abaixo estão listados os conteúdos que esta ferramenta dispõe:</h5>
         </div>
         <br>
+        {% set count = namespace(value=0) %}
+        {% set itr = namespace(value=0) %}
         {% for categoria in categorias %}
         <!--Lista de conteudo *modelo*-->
-        {% set p_categoria = '#' + categoria %}
+        {% set p_categoria = '#' + 'categoria' + count.value|string %}
+        {% set id_categoria = 'categoria' + count.value|string%}
         
         <div class="row">
             <div class="card-deck" style="width: 60vw;padding-bottom: 1vh;">
@@ -82,12 +85,14 @@
                         <p class="card-text" style="font-size: 1vw;"><b style="float:left">{{categoria}}</b><i
                                 style="float: right" class="fa fa-chevron-down" aria-hidden="true"></i></p>
                     </div>
-                    <div id={{categoria}} class="collapse" style="font-size: 1vw;">
-                        {% for subcategoria in subCategorias %}
-
+                    <div id={{id_categoria}} class="collapse" style="font-size: 1vw;">
+                    
+                    {% for subcategoria in conteudos[categoria] %}
+                        {% set p_subcategoria = '#' + 'subcategoria' + count.value|string %}
+                        {% set id_subcategoria = 'subcategoria' + count.value|string %}
                         <div class="card-body text-white ">
-                            <a style="float:left; cursor: pointer;" data-toggle="modal" data-target="{{p_subcategoria}}"><b>{{categoria }}</b></a>
-                            <div id="{{subcategoria}}" class="modal fade" tabindex="-1" role="dialog"
+                            <a style="float:left; cursor: pointer;" data-toggle="modal" data-target="{{p_subcategoria}}"><b>{{subcategoria}}</b></a>
+                            <div id={{id_subcategoria}} class="modal fade" tabindex="-1" role="dialog"
                                 aria-labelledby="myLargeModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                                     <div class="modal-content bg-white" style="color:black;">
@@ -98,52 +103,36 @@
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
+                                        {% for problems in conteudos[categoria][subcategoria] %}
+                                            {% set itr.value = itr.value + 1 %}
+                                            {% set p_problem = '#' + 'problem' + itr.value|string %}
+                                            {% set id_problem = 'problem' + itr.value|string %}
                                         <div class="modal-body card" style="color:black;">
-                                            <div data-toggle="collapse" data-target="#problema1"
-                                                style="cursor: pointer;">
-                                                <p style="font-size: 1vw; cursor:pointer;"><b style="float:left">BHA001
-                                                        - Mouse nao aparece na tela</b><i style="float: right"
-                                                        class="fa fa-chevron-down" aria-hidden="true"></i></p>
-                                            </div>
-                                            <div id="problema1" class="collapse" style="font-size: 1vw;">
-                                                <br>
-                                                <a style="float:left;">teste222</a>
-                                            </div>
-                                            <br>
-                                            <div data-toggle="collapse" data-target="#problema2"
-                                                style="cursor: pointer;">
-                                                <p style="font-size: 1vw; cursor:pointer;"><b style="float:left">BHA002
-                                                        - Mouse pulando página da internet</b><i style="float: right"
-                                                        class="fa fa-chevron-down" aria-hidden="true"></i></p>
-                                            </div>
-                                            <div id="problema2" class="collapse" style="font-size: 1vw;">
-                                                <br>
-                                                <a style="float:left;">teste222</a>
-                                            </div>
-                                            <br>
-                                            <div data-toggle="collapse" data-target="#problema3"
+                                            <div data-toggle="collapse" data-target="{{p_problem}}"
                                                 style="cursor: pointer;">
                                                 <p style="font-size: 1vw; cursor:pointer;"><b style="float:left">
-                                                        BHA003 - Mouse travando</b><i style="float: right"
+                                                        {{problems["Problema"]}}</b><i style="float: right"
                                                         class="fa fa-chevron-down" aria-hidden="true"></i></p>
                                             </div>
-                                            <div id="problema3" class="collapse" style="font-size: 1vw;">
+                                            <div id="{{id_problem}}" class="collapse" style="font-size: 1vw;">
                                                 <br>
-                                                <a style="float:left;">teste222</a>
+                                                <a style="float:left;"> {{problems["Solução"]}}</a>
                                             </div>
-                                            <br>
+                                
                                         </div>
+                                        {% endfor %}
                                         <div class="modal-footer bg-MPF text-white">
                                             <button type="button" class="close text-white" data-dismiss="modal"
-                                                aria-label="Close"><b>Fechar</b></button>
+                                            aria-label="Close"><b>Fechar</b></button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <br>
                         </div>
+                        <div class="divider"></div>
+                        {% set count.value = count.value + 1 %}
+                        {% endfor %}
                     </div>
-                    {% endfor %}
                 </div>
             </div>
         </div>

@@ -56,7 +56,7 @@ class DataBase:
             conteudoDict[categoria] = dictSubCategoria
 
         self.closeBD()
-        print(conteudoDict['Windows']['Mouse'])
+        #print(conteudoDict['Windows']['Mouse'])
         return conteudoDict
 
     def findCategoria(self, collection):

@@ -5,6 +5,7 @@ from flask import render_template_string, redirect
 from flask_ldap3_login.forms import LDAPLoginForm
 from db import *
 import time
+import spacy
 
 
 app = Flask(__name__,template_folder='templates',static_url_path='/static')
@@ -79,7 +80,6 @@ def save_user(dn, username, data, memberships):
     users[dn] = user
     return user
 
-
 # Declaração de rotas
 @app.route('/')
 def home():
@@ -101,6 +101,7 @@ def login():
     # Instantiate a LDAPLoginForm which has a validator to check if the user
     # exists in LDAP.
     form = LDAPLoginForm()
+    consultaBot()
     if request.method=="POST":
         if form.validate_on_submit():
             # Successfully logged in, We can now access the saved user object
@@ -112,6 +113,14 @@ def login():
             return render_template('login.html', form=form, var=1)
     if request.method=="GET":
         return render_template('login.html',form=form, var=0)
+    
+
+def consultaBot():
+    nlp = spacy.load('pt_core_news_md')
+    fraseUsuario = nlp('Meu teclado está apresentando inconsistencias nas teclas apertadas, quando eu aperto uma tecla aparece outra diferente')    
+
+    for aux in fraseUsuario:
+        print(aux.orth_ + ' -> ' + aux.pos_)
     
 @app.route('/logout')
 def logout():
@@ -157,28 +166,8 @@ def admin_del():
     else:
         return redirect(url_for('logout'))
 
-# @app.route('/test', methods=['GET', 'POST'])
 
-'''def createDictConteudoHardware():
-    
-    #db = connectBD()
-    #problem = getProblemsCollection(db)
-    hardwareDict = []
-    equipamento = []
-    titulos = ['Mouse', 'Teclado', 'Monitor', 'Disco rígido', 'Áudio', 'Gabinete','Webcam']
-    #query para preencher o dict de Hardware
-    for titulo in titulos:
-        results = problem.find({"categoria":titulo})
-        equipamento = []
-        #criando um dict de documentos
-        for result in results:
-            item = dict(titulo=result['titulo'], solucao=result['solucao'], categoria = result['categoria'])
-            equipamento.append(item)
-        
-        hardwareDict.append(equipamento)
 
-    return hardwareDict
-'''
 
 if __name__ == '__main__':
     app.run()

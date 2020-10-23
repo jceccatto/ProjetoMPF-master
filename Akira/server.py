@@ -1,9 +1,12 @@
-from flask import Flask, url_for, render_template, request
+from flask import Flask, url_for, render_template, request, jsonify
 from flask_ldap3_login import LDAP3LoginManager
 from flask_login import LoginManager, login_user, UserMixin, current_user, login_required, logout_user
 from flask import render_template_string, redirect
 from flask_ldap3_login.forms import LDAPLoginForm
-import requests
+from db import *
+import time
+import spacy
+
 
 app = Flask(__name__,template_folder='templates',static_url_path='/static')
 app.config['SECRET_KEY'] = 'JAMES TIBERIUS KIRK'
@@ -77,7 +80,6 @@ def save_user(dn, username, data, memberships):
     users[dn] = user
     return user
 
-
 # Declaração de rotas
 @app.route('/')
 def home():
@@ -85,13 +87,21 @@ def home():
     if not current_user or current_user.is_anonymous:
         return redirect(url_for('login'))
     # User is logged in, so show them a page with their cn and dn.
-    return render_template('index.html')
+    db = DataBase()
+    conteudo = db.getConteudo()
+    print('Conteudo :' + str(conteudo) + '\n')
+    categoria = db.getCategoria()
+    # print('Categoria :' + str(categoria) + '\n')
+    subCategoria = db.getSubCategoria()
+    # print('Subcategoria :' + str(subCategoria) + '\n')
+    return render_template('index.html',conteudos = conteudo, categorias = categoria, subCategorias = subCategoria)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     # Instantiate a LDAPLoginForm which has a validator to check if the user
     # exists in LDAP.
     form = LDAPLoginForm()
+    consultaBot()
     if request.method=="POST":
         if form.validate_on_submit():
             # Successfully logged in, We can now access the saved user object
@@ -103,7 +113,14 @@ def login():
             return render_template('login.html', form=form, var=1)
     if request.method=="GET":
         return render_template('login.html',form=form, var=0)
+    
 
+def consultaBot():
+    nlp = spacy.load('pt_core_news_md')
+    fraseUsuario = nlp('Meu teclado está apresentando inconsistencias nas teclas apertadas, quando eu aperto uma tecla aparece outra diferente')    
+
+    for aux in fraseUsuario:
+        print(aux.orth_ + ' -> ' + aux.pos_)
     
 @app.route('/logout')
 def logout():
@@ -149,15 +166,8 @@ def admin_del():
     else:
         return redirect(url_for('logout'))
 
-@app.route('/abrirSNP')
-def abrirSNP():
-    url =  "https://intranet.mpf.mp.br/snp/api/novo-pedido"
-    print("hello world")
-    # url = "https://google.com"
-    res = requests.get(url, verify=False)
 
-    print(res.status_code)
-    return render_template('index.html')
+
 
 if __name__ == '__main__':
     app.run()

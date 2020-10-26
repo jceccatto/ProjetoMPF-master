@@ -12,8 +12,9 @@ class DataBase:
         
     def connectBD(self):
         try:
-            #self.client = pymongo.MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false")
-            self.client = pymongo.MongoClient("mongodb+srv://mongoread:mongoreadMPF@akiradb.ubcx3.gcp.mongodb.net/<dbname>?retryWrites=true&w=majority")
+            # self.client = pymongo.MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass%20Community&ssl=false")
+            # self.client = pymongo.MongoClient("mongodb+srv://mongoread:mongoreadMPF@akiradb.ubcx3.gcp.mongodb.net/<dbname>?retryWrites=true&w=majority")
+            self.client = pymongo.MongoClient("mongodb+srv://mongoread:mongoread@akiradb.ubcx3.gcp.mongodb.net/akiraDB?retryWrites=true&w=majority")
             self.db = self.client["dbAkira"]
             print('Conexão bem sucedida!')
             # return db
@@ -86,13 +87,24 @@ class DataBase:
 
     def getTagsColletion(self):
         return self.db["tagsCollection"]
+
     def getProblemsCollection(self):
         return self.db["problemCollection"]
+
     def getSubCategoria(self):
         return self.subCategoria
+
     def getCategoria(self):
         return self.categoria
 
+    def createIndex(self):
+        aux = self.db['problemCollection'].find({"$text" : {"$search": 'Mouse'}})
+        print(aux[0])
+        # for i in aux:
+        #     print(i)
 
 teste = DataBase()
-conteudo = teste.getConteudo()
+# teste.getConteudo()
+# problemas.createIndex( { "Problema": "text"} )
+# teste.createIndex()
+# conteudo = teste.getConteudo()

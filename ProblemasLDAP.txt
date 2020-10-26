@@ -1,0 +1,11 @@
+Em caso de erro no ldap
+
+Tente usar esse código:
+
+python -m pip install python_ldap-3.2.0-cp37-cp37m-win_amd32.whl
+
+com a versão do python 32bits e
+
+python -m pip install python_ldap-3.2.0-cp37-cp37m-win_amd64.whl
+
+com a verão do python de 64bits

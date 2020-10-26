@@ -5,7 +5,7 @@ from flask import render_template_string, redirect
 from flask_ldap3_login.forms import LDAPLoginForm
 from db import *
 import time
-import spacy
+# import spacy
 
 
 app = Flask(__name__,template_folder='templates',static_url_path='/static')
@@ -101,7 +101,7 @@ def login():
     # Instantiate a LDAPLoginForm which has a validator to check if the user
     # exists in LDAP.
     form = LDAPLoginForm()
-    consultaBot()
+    # consultaBot()
     if request.method=="POST":
         if form.validate_on_submit():
             # Successfully logged in, We can now access the saved user object
@@ -115,12 +115,12 @@ def login():
         return render_template('login.html',form=form, var=0)
     
 
-def consultaBot():
-    nlp = spacy.load('pt_core_news_md')
-    fraseUsuario = nlp('Meu teclado está apresentando inconsistencias nas teclas apertadas, quando eu aperto uma tecla aparece outra diferente')    
+# def consultaBot():
+#     nlp = spacy.load('pt_core_news_md')
+#     fraseUsuario = nlp('Meu teclado está apresentando inconsistencias nas teclas apertadas, quando eu aperto uma tecla aparece outra diferente')    
 
-    for aux in fraseUsuario:
-        print(aux.orth_ + ' -> ' + aux.pos_)
+#     for aux in fraseUsuario:
+#         print(aux.orth_ + ' -> ' + aux.pos_)
     
 @app.route('/logout')
 def logout():

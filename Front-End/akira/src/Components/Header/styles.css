@@ -7,9 +7,9 @@
 }
 
 .page-header .logo-header{
-    width: 10rem;
-    height: 10rem;
+    height: max-content;
     margin-left: 3rem;
+    margin-top: 3rem;
 }
 
 

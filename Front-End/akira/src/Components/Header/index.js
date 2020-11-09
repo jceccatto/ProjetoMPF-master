@@ -1,6 +1,6 @@
 import React from 'react'
 import './styles.css'
-import Logo from '../../assets/img/azul-logo.svg'
+import Logo from '../../assets/img/logoMPF/mpf_branca.png'
 import Menu from '../Menu';
 
 function Header(){
@@ -18,7 +18,7 @@ function Header(){
 
     return(
         <header className='page-header has-shown'>
-            <img src={Logo} alt="" className='logo-header'/>
+            <img src={Logo} alt="MPF" className='logo-header'/>
             <Menu />
         </header>
     );

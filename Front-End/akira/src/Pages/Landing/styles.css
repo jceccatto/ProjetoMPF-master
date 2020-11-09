@@ -5,91 +5,77 @@
 
 #page-landing .container{
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
     height: calc(100vh - 135px);
-    margin-left: 10rem;
+}
+
+#page-landing .container .logo-container{
+    height: fit-content;
+    opacity: 0;
+    animation: showed 2s 1.5s ease forwards;
+}
+
+#page-landing .container .logo-container img{
+    height: 20rem;
 }
 
 #page-landing .container .title-container{
-    display: grid;
-    grid-template: 
-        "title"
-        "button";
-    align-items: center;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 0px;
 }
 
 #page-landing .container .title-container h1{
     grid-area: title;
-    font: 10rem Oxygen;
+    font: 5rem Poppins;
     font-weight: 700;
     opacity: 0;
     animation: showed 2s 2s ease forwards;
     max-width: 65rem;
+    color: var(--color-title-in-primary);
 }
 
-#page-landing .container .title-container button{
-    grid-area: button;
-    margin-top: 3rem;
-    padding: 10px;
-    width: 35.7rem;
-    height: 7rem;
-    border-radius: 8rem;
-    background: var(--color-secundary);
+#page-landing .container .buttons-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin-top: 5.5rem;
+}
+
+#page-landing .container .buttons-container .button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 3.5rem;
+    margin-right: 3.5rem;
     color: var(--color-button-text);
-    border: none;
-    font: 2rem Zilla Slab;
-    justify-self: center;
-    transition: width 0.3s, height 0.3s;
-    opacity: 0;
-
-    animation: showed 2s 3s ease forwards;
 }
 
-#page-landing .container .title-container button ion-icon{
-    margin-left: 0.5rem;
-    width:2.5rem;
-    height: 2.5rem;
+#page-landing .container .buttons-container .button:hover{
+    color: var(--color-button-hover) ;
 }
 
-#page-landing .container .title-container button:hover{
-    height: 7.5rem;
-    width: 37.2rem;
+#page-landing .container .buttons-container .button:hover ion-icon{
+    color: var(--color-button-hover) ;
 }
 
-#page-landing .container .title-container button:hover ion-icon{
-    animation: shake-lr 0.7s linear ;
-}
-
-#page-landing .container hr{
-    width: 1px;
-    height: 50%;
-    background: var(--color-primary-lighter);
-    opacity: 0;
-    animation: showed 2s 3.5s ease forwards;
-
-}
-
-#page-landing .container .container-tips{
-    margin-right: 10rem;
-}
-
-#page-landing .container .container-tips h1{
+#page-landing .container .buttons-container .button ion-icon{
+    color: var(--color-icons);
+    width: 5.5rem;
+    height: 5.5rem;
     opacity: 0;
     animation: showed 2s 2.5s ease forwards;
 }
 
-#page-landing .container .container-tips p{
-    margin: 1rem;
-    max-width: 40rem;
+#page-landing .container .buttons-container .button h2{
+    font-family: Nunito;
     opacity: 0;
-    animation: showed 2s 3s ease forwards;
+    animation: showed 2s 2.8s ease forwards;
 }
 
-#page-landing .container .container-tips .accordion{
-    opacity: 0;
-    animation: showed 2s 3s ease forwards;
-}
+
 
 @keyframes showed{
     0% {
@@ -104,29 +90,3 @@
 }
 
   
-@keyframes shake-lr {
-    0%,
-    100% {
-      transform: rotate(0deg);
-      transform-origin: 50% 50%;
-    }
-    10% {
-      transform: rotate(8deg);
-    }
-    20%,
-    40%,
-    60% {
-      transform: rotate(-10deg);
-    }
-    30%,
-    50%,
-    70% {
-      transform: rotate(10deg);
-    }
-    80% {
-      transform: rotate(-8deg);
-    }
-    90% {
-      transform: rotate(8deg);
-    }
-  }

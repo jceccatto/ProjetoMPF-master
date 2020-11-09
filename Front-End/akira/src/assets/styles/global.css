@@ -1,7 +1,7 @@
 :root{
     font-size: 60%;
 
-    --color-background: #F0F0F7;
+    --color-background: #021027;
     --color-primary-lighter: #9871F5;
     --color-primary-lighter-menu: rgb(152,113,245,0.5);
     --color-primary-lighter-menu-dark: rgba(97, 72, 156, 0.5);
@@ -19,8 +19,9 @@
     --color-line-in-white: #E6E6F0;
     --color-input-background: #F8F8FC;
     --color-button-text: #FFFFFF;
-    --color-box-base: #FFFFFF;
-    --color-box-footer: #FAFAFC;
+    /* --color-button-hover:#817767;  */
+    --color-button-hover:#021027; 
+    --color-icons: #FFFFFF;
 }
 
 * {
@@ -34,7 +35,10 @@ html, body, #root {
 }
 
 body{
-    background: var(--color-background);
+    background-image: url(../img/mpfjpg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 #root {

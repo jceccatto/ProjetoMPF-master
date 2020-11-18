@@ -2,7 +2,6 @@ import React from 'react'
 import './styles.css'
 import Header from '../../Components/Header/'
 import Button from '@material-ui/core/Button'
-import Tips from '../../Components/Tips'
 import Footer from '../../Components/Footer'
 import Divider from '@material-ui/core/Divider';
 import LogoBot from '../../assets/img/outstonelogo.png'

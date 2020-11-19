@@ -2,16 +2,18 @@ import React from 'react'
 import './styles.css'
 import Header from '../../Components/Header/'
 import Button from '@material-ui/core/Button'
-import Footer from '../../Components/Footer'
 import Divider from '@material-ui/core/Divider';
 import LogoBot from '../../assets/img/outstonelogo.png'
+
+import Logo from '../../assets/img/logoMPF/mpf_branca.png'
+import Menu from '../../Components/Menu';
 
 const LandingPage = () => {
 
     return(
         <div id='page-landing'>
             <Header />
-            <div className='container'>
+            <div id='container' className='container'>
                 <div className="logo-container">
                     <img src={LogoBot} alt="LogoBot"/>
                 </div>

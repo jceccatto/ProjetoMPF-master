@@ -14,12 +14,15 @@ const Menu = () => {
     function selectMenu(){
         const menuBtn = document.getElementById('menu-btn');
         const menuBG = document.getElementById('div-menu-background')
+
+
         menuBtn.addEventListener('click', function(){
             if(!open){
+
                 menuBtn.classList.add('open');
 
-                menuBG.classList.add('open');
                 menuBG.classList.remove('close');
+                menuBG.classList.add('open');
             } else {
                 menuBtn.classList.remove('open');
 
@@ -43,10 +46,21 @@ const Menu = () => {
             </div>
 
             
-            <div id='div-menu-background' className='div-menu-background'>
-                <h1>Menu</h1>
+            <nav id='div-menu-background' className='div-menu-background'>
+                <ul className='menu-list'>
+                    <div className='profile'>
+                        <ion-icon name="person-circle-outline"></ion-icon>
+                        <h1>estagiario40959</h1>
+                    </div>
+                    <li className='menu-item'>Sobre</li>
+                    <li className='menu-item'>Converse conosco</li>
+                    <li className='menu-item'>Contato</li>
+                    <li className='menu-item'>Sair</li>
+                </ul>
 
-            </div>
+            </nav>
+
+            
            
         </React.Fragment>
     );

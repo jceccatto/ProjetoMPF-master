@@ -1,23 +1,10 @@
-.page-header {
-    width: 100vw;
-    height: 100px;
-    margin: 0 0;
-    display: flex;
-    justify-content: space-between;
-}
-
-.page-header .logo-header{
+.logo-header{
+    position: absolute;
+    top: 0px;
     height: max-content;
     margin-left: 3rem;
     margin-top: 3rem;
 }
-
-
-.page-header .div-menu {
-    display: none;
-    color: white;
-}
-
 
 .has-shown {
     animation: has-shown 2s ease-in-out forwards;

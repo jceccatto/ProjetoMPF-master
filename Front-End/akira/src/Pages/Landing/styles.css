@@ -1,13 +1,14 @@
 #page-landing{
     width: 100vw;
-    height: 100vh;
+    height: 100%;
 }
 
 #page-landing .container{
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: calc(100vh - 135px);
+    margin-top: 100px;
+    height: calc(100vh - 100px);
 
 }
 
